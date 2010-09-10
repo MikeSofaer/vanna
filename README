@@ -1,0 +1,3 @@
+Action Presenter
+
+The concept here is that all requests should go through a JSON API before being rendered
