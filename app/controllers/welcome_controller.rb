@@ -1,4 +1,4 @@
-require 'lib/action_presenter'
+require 'lib/application_presenter'
 class WelcomeController < ApplicationPresenter
 
 def index
