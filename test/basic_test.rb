@@ -21,7 +21,7 @@ class BasicTest < Test::Unit::TestCase
   end
   def test_gets_html
     get "/"
-    assert{ last_response.body =~ /\{"text" => "hello"\}/ }
+    assert{ last_response.body =~ /"Here is some text.*hello/ }
   end
 
 end

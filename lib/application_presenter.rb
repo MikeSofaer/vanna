@@ -2,15 +2,15 @@ class ApplicationPresenter < ActionController::Metal
   abstract!
   include ActionController::MimeResponds
   include AbstractController::Rendering
-  append_view_path "views"
+  append_view_path "app/views"
   
   #These are just here to stop errors, they do nothing
   respond_to :html, :json
   def freeze_formats(f); end
   def formats; [:html, :json]; end
-  
-  def controller
-    self
+ 
+  def logger
+    ActionController::Base.logger
   end
 
 
@@ -24,6 +24,28 @@ module ActionController
     end
   end
 end
+module ::ActionView
+  module TemplateHandlers
+    class Handlebars < TemplateHandler
+      def self.call(template)
+        template.source
+      end
+    end
+  end
+  module Rendering
+    def _render_template(template, layout = nil, options = {})
+%{<div id=main>
+  <script src='public/javascripts/handlebars.js'>
+  <script type=javascript> 
+    var temmplate = Handlebars.compile(#{template.source});
+        var dictionary = #{options}
+    document.getElementById('main').innerText=template(dictionary, {});
+  </script>
+}      
+    end
+  end
+end
+::ActionView::Template.register_template_handler(:bar, ::ActionView::TemplateHandlers::Handlebars)
 =begin
 class ApplicationPresenter < ActionController::Metal
 
