@@ -6,12 +6,12 @@ I decided to go with Handlebars because it was in my RSS reader when I was worki
 
 The controller is pretty simple, using the Rails 3 "respond_with" feature.
 ##WelcomeController
->require 'lib/application_presenter'
->class WelcomeController < ApplicationPresenter
->  def index
->    respond_with :text => "hello"
->  end
->end
+require 'lib/application_presenter'  
+class WelcomeController < ApplicationPresenter  
+  def index  
+    respond_with :text => "hello"  
+  end  
+end  
 
 The view is a handlebars template
 ##app/views/welcome/index.html.bar
