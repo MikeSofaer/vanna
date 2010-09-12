@@ -20,7 +20,7 @@ module ActionController
     protected
     def default_render
       controller.response_body = request.format.symbol == :json ?
-        options.to_json : controller.render
+        options.to_json : controller.render(nil, :dictionary => options)
     end
   end
 end
@@ -35,10 +35,10 @@ module ::ActionView
   module Rendering
     def _render_template(template, layout = nil, options = {})
 %{<div id=main>
-  <script src='public/javascripts/handlebars.js'>
-  <script type=javascript> 
-    var temmplate = Handlebars.compile(#{template.source});
-        var dictionary = #{options}
+  <script src='javascripts/handlebars.js'></script>
+  <script type="text/javascript"> 
+    var template = Handlebars.compile("#{template.source.gsub(/\s/, " ")}");
+        var dictionary = #{options[:dictionary].to_json}
     document.getElementById('main').innerText=template(dictionary, {});
   </script>
 }      

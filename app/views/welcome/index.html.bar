@@ -1,2 +1,1 @@
-Here is some text: <br>
-{{text}}
+Here is some text: {{text}}
