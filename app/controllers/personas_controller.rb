@@ -1,7 +1,7 @@
 require 'lib/presenter'
 class PersonasController < Presenter
   def index
-    respond_with layout_pieces.merge(
+    layout_pieces.merge(
       {"main" => {"personas" => PersonasSerializer.full_list}}
     )
   end

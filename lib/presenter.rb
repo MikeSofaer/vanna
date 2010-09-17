@@ -14,19 +14,12 @@ class Presenter < ActionController::Metal
   end
 
   def process_action(method_name, *args)
-    respond_with(send_action(method_name, *args))
+    dictionary = send_action(method_name, *args)
+    self.response_body = request.format.symbol == :json ?
+      dictionary.to_json : render(nil, :dictionary => dictionary)
   end
+end
 
-end
-module ActionController
-  class Responder
-    protected
-    def default_render
-      controller.response_body = request.format.symbol == :json ?
-        options.to_json : controller.render(nil, :dictionary => options)
-    end
-  end
-end
 module ::ActionView
   module TemplateHandlers
     class Handlebars < TemplateHandler
@@ -49,20 +42,3 @@ module ::ActionView
   end
 end
 ::ActionView::Template.register_template_handler(:bar, ::ActionView::TemplateHandlers::Handlebars)
-=begin
-class ApplicationPresenter < ActionController::Metal
-
-
-  include ActionView::Context
-  def _render_template_from_controller(template, layout = DEFAULT_LAYOUT, options = {}, partial = false)
-    template.template = template_string
-    ret = template.render(self, options)
-    layout.render(self, options) { ret }
-  end
- 
-  DEFAULT_LAYOUT = Object.new.tap {|l| def l.render(*) JsonTemplateRenderer.tag + 
-    "<body><div id=main></div></body>"+ yield end }
-
-  
-end
-=end
