@@ -21,7 +21,7 @@ class BasicTest < Test::Unit::TestCase
   end
   def test_html_compiles_template
     get "/"
-    assert{ last_response.body =~  /Handlebars.compile\("Here is some text: <br>\s*\{\{text\}\}\s*"\);/ }
+    assert{ last_response.body =~  /Handlebars.compile\("Here is some text: \{\{text\}\} "\);/ }
   end
   def test_html_provides_dictionary
     get "/"  

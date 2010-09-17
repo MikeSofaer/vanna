@@ -1,6 +1,6 @@
-require 'lib/application_presenter'
-class WelcomeController < ApplicationPresenter
+require 'lib/presenter'
+class WelcomeController < Presenter
   def index
-    respond_with :text => "hello"    
+    {:text => "hello"}    
   end
 end

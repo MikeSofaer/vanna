@@ -1,4 +1,4 @@
-class ApplicationPresenter < ActionController::Metal
+class Presenter < ActionController::Metal
   abstract!
   include ActionController::MimeResponds
   include AbstractController::Rendering
@@ -13,6 +13,9 @@ class ApplicationPresenter < ActionController::Metal
     ActionController::Base.logger
   end
 
+  def process_action(method_name, *args)
+    respond_with(send_action(method_name, *args))
+  end
 
 end
 module ActionController
