@@ -30,7 +30,7 @@ module ::ActionView
   end
   module Rendering
     def _render_template(template, layout = nil, options = {})
-%{<div id=main>
+%{<div id=main></div>
   <script src='javascripts/handlebars.js'></script>
   <script type="text/javascript"> 
     var template = Handlebars.compile("#{template.source.gsub(/\s/, " ")}");
