@@ -1,0 +1,9 @@
+{{#div}}
+{{nav}}
+{{/div}}
+{{#div}}
+{{main}}
+{{/div}}
+{{#div}}
+{{footer}}
+{{/div}}
