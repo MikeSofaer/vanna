@@ -37,13 +37,15 @@ module ::ActionView
 </script>
 }
 	  end
+	  
+	  def self.result(template, layout = nil, options = {})
+      "<div id=main></div>" + js_file + js_render(template, options[:dictionary], "main")
+	  end
     end
   end
   module Rendering
-    def _render_template(template, layout = nil, options = {})
-      js = ::ActionView::TemplateHandlers::Handlebars.js_file + 
-	    ::ActionView::TemplateHandlers::Handlebars.js_render(template, options[:dictionary], "main")
-	  "<div id=main></div>" + js
+    def _render_template(template, layout, options)
+	  ::ActionView::TemplateHandlers::Handlebars.result(template, layout, options)
     end
   end
 end
