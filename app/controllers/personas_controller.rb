@@ -2,7 +2,7 @@ require './lib/presenter'
 class PersonasController < Presenter
   def index
     layout_pieces.merge(
-      {"main" => {"personas" => PersonasSerializer.full_list}}
+      {"main" => {"personas" => Persona.all}}
     )
   end
 
@@ -11,22 +11,19 @@ class PersonasController < Presenter
   end
 end
 
-class PersonasSerializer
-  @@all = nil
-  def self.full_list
-    @@all || [Persona.sample]
-  end
-  def self.add(hash)
-    @@all ||= []
-    @@all << Persona.create(hash)
-  end
-end
-
 class Persona < Hash
+@@all = nil
   def self.sample
     {:name => "louis", :catchphrase => "Don't look at me", :photo_url => "/dev/null"}
   end
-  def self.create(hash)
+  def self.all
+    @@all ||= [sample]
+  end
+  def self.new(hash)
     Hash.new.merge(hash)
+  end
+  def self.create(hash)
+    @@all ||= []
+	@@all << new(hash)
   end
 end
