@@ -1,5 +1,5 @@
 require "rack/test"
-require 'test/test_helper'
+require './test/test_helper'
 require 'json'
 require 'wrong'
 require 'wrong/adapters/test_unit'

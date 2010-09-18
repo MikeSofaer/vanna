@@ -26,18 +26,24 @@ module ::ActionView
       def self.call(template)
         template.source
       end
+	  def self.js_file
+	    "<script src='javascripts/handlebars.js'></script>"
+	  end
+	  def self.js_render(template, dictionary, div_name)
+        %{<script type="text/javascript"> 
+    var template = Handlebars.compile("#{template.source.gsub(/\s/, " ")}");
+    var dictionary = #{dictionary.to_json}
+    document.getElementById('#{div_name}').innerText=template(dictionary, {});
+</script>
+}
+	  end
     end
   end
   module Rendering
     def _render_template(template, layout = nil, options = {})
-%{<div id=main></div>
-  <script src='javascripts/handlebars.js'></script>
-  <script type="text/javascript"> 
-    var template = Handlebars.compile("#{template.source.gsub(/\s/, " ")}");
-        var dictionary = #{options[:dictionary].to_json}
-    document.getElementById('main').innerText=template(dictionary, {});
-  </script>
-}      
+      js = ::ActionView::TemplateHandlers::Handlebars.js_file + 
+	    ::ActionView::TemplateHandlers::Handlebars.js_render(template, options[:dictionary], "main")
+	  "<div id=main></div>" + js
     end
   end
 end

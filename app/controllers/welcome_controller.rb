@@ -1,4 +1,4 @@
-require 'lib/presenter'
+require './lib/presenter'
 class WelcomeController < Presenter
   def index
     {:text => "hello"}    

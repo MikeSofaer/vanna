@@ -1,4 +1,4 @@
-require 'lib/presenter'
+require './lib/presenter'
 class PersonasController < Presenter
   def index
     layout_pieces.merge(
