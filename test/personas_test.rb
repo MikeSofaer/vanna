@@ -19,10 +19,15 @@ class BasicTest < Test::Unit::TestCase
     Persona.create @demo_hash
   end
 
+  def test_index_has_layout
+    header "Accept", 'application/json'
+    get "/personas"
+	assert{ JSON(last_response.body).keys.sort == ["nav", "main", "footer"].sort }
+  end
+  
   def test_index_lists_personas
     header "Accept", 'application/json'
     get "/personas"
-    assert{ JSON(last_response.body).keys.sort == ["nav", "main", "footer"].sort }
     assert{ JSON(last_response.body)["main"]["personas"].first == @demo_hash }
   end
 end

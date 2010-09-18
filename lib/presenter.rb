@@ -2,6 +2,8 @@ class Presenter < ActionController::Metal
   abstract!
   include ActionController::MimeResponds
   include AbstractController::Rendering
+  include AbstractController::Callbacks
+
   append_view_path "app/views"
   
   #These are just here to stop errors, they do nothing
@@ -14,9 +16,12 @@ class Presenter < ActionController::Metal
   end
 
   def process_action(method_name, *args)
-    dictionary = send_action(method_name, *args)
-    self.response_body = request.format.symbol == :json ?
-      dictionary.to_json : render(nil, :dictionary => dictionary)
+    run_callbacks(:process_action, method_name) do
+      dictionary = send_action(method_name, *args)
+	  dictionary = @layout_pieces.merge(dictionary) if @layout_pieces
+      self.response_body = request.format.symbol == :json ?
+        dictionary.to_json : render(nil, :dictionary => dictionary)
+    end
   end
 end
 
