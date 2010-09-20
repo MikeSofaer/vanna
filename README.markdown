@@ -17,12 +17,12 @@ I needed a logic-free template language, and Handlebars showed up in my RSS read
 Presenters should return hashes if they intend to respond with OK.  There should be no explicit render call inside them.  They should be reusable as pieces of larger controller requests.
 
 #WelcomeController
-`require './lib/presenter'`  
-`class WelcomeController < Presenter`  
-`  def index`  
-`    {:text => "hello"}`  
-`  end`  
-`end`  
+    require './lib/presenter'
+    class WelcomeController < Presenter
+      def index
+        {:text => "hello"}
+      end
+    end  
 
 The view is a handlebars template
 #app/views/welcome/index.html.bar
@@ -35,26 +35,26 @@ Here is some text: {{text}}
 `{"text":"hello"}`
 
 ##Data for layouts:
-`require './lib/presenter'`  
-`class ApplicationPresenter < Presenter`  
-`  before_filter :layout_pieces` 
-`  def layout_pieces`  
-`    @layout_pieces = {:nav => "nav stuff"}`  
-`  end`  
-`end`  
+    require './lib/presenter'  
+    class ApplicationPresenter < Presenter  
+      before_filter :layout_pieces 
+      def layout_pieces
+        @layout_pieces = {:nav => "nav stuff"}  
+      end
+    end  
 
 ##Complex Presenters
-`require './lib/presenter'  
-class ComplexController < ApplicationPresenter  
-  def index  
-    {:main => main, :sidebar => sidebar}  
-  end  
-  def main  
-    {:complexities => Complexity.all}  
-  end  
-  def sidebar  
-    {:advertisements => Advertisement.for(current_user)  
-  end  
-end`  
+    require './lib/presenter  
+    class ComplexController < ApplicationPresenter  
+      def index  
+        {:main => main, :sidebar => sidebar}  
+      end  
+      def main  
+        {:complexities => Complexity.all}  
+      end  
+      def sidebar  
+        {:advertisements => Advertisement.for(current_user)  
+      end  
+    end  
 
 As a side effect of this model, you can call main and sidebar as explicit JSON methods and get those pieces of data.  This unifies your data presentation chain.
