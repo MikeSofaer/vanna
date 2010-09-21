@@ -1,5 +1,5 @@
-require './lib/presenter'
-class ApplicationPresenter < Presenter
+require './lib/vanna'
+class ApplicationRevealer < Vanna
   before_filter :setup_layout
   
   def setup_layout

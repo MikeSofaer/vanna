@@ -19,13 +19,9 @@ class BasicTest < Test::Unit::TestCase
     get "/"
     assert{ JSON(last_response.body) == {"text" => "hello"} }
   end
-  def test_html_compiles_template
+  def test_html_renders_template
     get "/"
-    assert{ last_response.body =~  /Handlebars.compile\("Here is some text: \{\{text\}\} "\);/ }
-  end
-  def test_html_provides_dictionary
-    get "/"  
-    assert{ last_response.body =~ /var dictionary = \{"text":"hello"\}/ }
+    assert{ last_response.body =~  /Here is some text: hello/ }
   end
 end
 

@@ -1,5 +1,5 @@
-require './lib/presenter'
-class WelcomeController < Presenter
+require './lib/vanna'
+class WelcomeController < Vanna
   def index
     {:text => "hello"}    
   end

@@ -1,5 +1,4 @@
-require './lib/presenter'
-class PersonasController < ApplicationPresenter
+class PersonasController < ApplicationRevealer
   def index
     {"main" => {"personas" => Persona.all}}
   end
