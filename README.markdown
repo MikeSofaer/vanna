@@ -29,7 +29,7 @@ Presenters should return hashes if they intend to respond with OK.  There should
     end  
 
 The view is a basic ERB template.  No instance variables, you get the top keys as locals:
-#app/views/welcome/index.html.bar
+#app/views/welcome/index.html.erb
 `Here is some text: <%=text%>`
 
 #HTML output
