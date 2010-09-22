@@ -59,7 +59,7 @@ in in the controller flow
       def sidebar
         Persona.all.map{|p| p["catchphrase"]}
       end
-end
+    end
 As a side effect of this model, you can call main and sidebar as explicit JSON methods and get those pieces
 of data.  This unifies your data presentation chain.  So just building the sidebar for your webpage makes
 it available on its own for JSON calls for mobile or AJAX
