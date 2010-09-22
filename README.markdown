@@ -51,7 +51,7 @@ in in the controller flow
       end
     end  
 
-##Comple
+##Complex Controllers
     class PersonasController < ApplicationPresenter
       def index
         {"main" => {"personas" => Persona.all, :sidebar => sidebar}}
