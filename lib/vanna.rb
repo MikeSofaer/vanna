@@ -1,8 +1,8 @@
 module Vanna
   def self.included(klass)
     raise "#{klass.name} does not inherit from ActionController::Metal" unless klass.ancestors.include?(ActionController::Metal)
-    klass.send(:include,  AbstractController::Rendering)
     klass.send(:include,  AbstractController::Callbacks)
+    klass.send(:include,  AbstractController::Layouts)
     klass.append_view_path "app/views"
   end
 

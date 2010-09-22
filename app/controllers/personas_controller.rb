@@ -1,4 +1,4 @@
-class PersonasController < ApplicationPresenter
+class PersonasController < ApplicationController
   def index
     {:main => {"personas" => Persona.all, :sidebar => sidebar}}
   end
