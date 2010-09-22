@@ -5,15 +5,6 @@ class Vanna < ActionController::Metal
   include AbstractController::Callbacks
 
   append_view_path "app/views"
-  
-  #These are just here to stop errors, they do nothing
-  respond_to :html, :json
-  def freeze_formats(f); end
-  def formats; [:html, :json]; end
- 
-  def logger
-    ActionController::Base.logger
-  end
 
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do
