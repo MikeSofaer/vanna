@@ -15,8 +15,11 @@ class BasicTest < Test::Unit::TestCase
   end
   
   def setup
-    @demo_hash = {"name" => "The Fire Eater", "catchphrase" => "Hungry like the volcano!", "photo_url" => "example.com/img/fire_eater_photo"}
-    Persona.create @demo_hash
+    Persona.clear
+    @luis = {"name" => "The Fire Eater", "catchphrase" => "Hungry like the volcano!", "photo_url" => "example.com/img/fire_eater_photo"}
+    @giorgi = {"name" => "Mystical Gondola", "catchphrase" => "You're gonna get punted!", "photo_url" => "example.com/img/mystical_gondola_photo"}
+    Persona.create @luis
+    Persona.create @giorgi
   end
 
   def test_index_has_layout
@@ -28,6 +31,16 @@ class BasicTest < Test::Unit::TestCase
   def test_index_lists_personas
     header "Accept", 'application/json'
     get "/personas"
-    assert{ JSON(last_response.body)["main"]["personas"].first == @demo_hash }
+    assert{ JSON(last_response.body)["main"]["personas"].first == @luis }
+  end
+  def test_index_lists_catchphrases
+    header "Accept", 'application/json'
+    get "/personas"
+    assert{ JSON(last_response.body)["main"]["sidebar"] == ["Hungry like the volcano!", "You're gonna get punted!"] }
+  end
+  def test_sidebar_method_works
+    header "Accept", 'application/json'
+    get "/personas/sidebar"
+    assert{ JSON(last_response.body) == ["Hungry like the volcano!", "You're gonna get punted!"] }
   end
 end

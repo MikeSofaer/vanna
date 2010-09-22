@@ -13,4 +13,7 @@ class Persona < Hash
     @@all ||= []
 	@@all << new(hash)
   end
+  def self.clear
+    @@all = nil
+  end
 end

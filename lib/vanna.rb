@@ -18,7 +18,7 @@ class Vanna < ActionController::Metal
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do
       dictionary = send_action(method_name, *args)
-	  dictionary = @layout_pieces.merge(dictionary) if @layout_pieces
+	  dictionary = @layout_pieces.merge(dictionary) if @layout_pieces && dictionary.is_a?(Hash)
       self.response_body = request.format.symbol == :json ?
         dictionary.to_json : html_render(dictionary)
     end
