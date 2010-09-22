@@ -1,10 +1,11 @@
-class Vanna < ActionController::Metal
-  abstract!
-  include ActionController::MimeResponds
-  include AbstractController::Rendering
-  include AbstractController::Callbacks
-
-  append_view_path "app/views"
+module Vanna
+  def self.included(klass)
+    raise "#{klass.name} does not inherit from ActionController::Metal" unless klass.ancestors.include?(ActionController::Metal)
+    klass.send(:include,  AbstractController::Rendering)
+    klass.send(:include,  ActionController::MimeResponds)
+    klass.send(:include,  AbstractController::Callbacks)
+    klass.append_view_path "app/views"
+  end
 
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do

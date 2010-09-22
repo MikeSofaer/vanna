@@ -1,5 +1,6 @@
 require './lib/vanna'
-class ApplicationRevealer < Vanna
+class ApplicationPresenter < ActionController::Metal
+  include Vanna
   before_filter :setup_layout
   
   def setup_layout

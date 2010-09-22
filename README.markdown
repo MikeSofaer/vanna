@@ -22,7 +22,8 @@ Presenters should return hashes if they intend to respond with OK.  There should
 
 #WelcomeController
     require './lib/vanna'
-    class WelcomeController < Vanna
+    class WelcomeController < ActionController::Metal
+      include Vanna
       def index
         {:text => "hello"}
       end
@@ -42,7 +43,8 @@ The view is a basic ERB template.  No instance variables, you get the top keys a
 Here I didn't come up with a good way to avoid instance variables, so the @layout_pieces gets merged
 in in the controller flow
     require './lib/vanna'  
-    class ApplicationRevealer < Vanna  
+    class ApplicationPresenter < ActionController::Metal
+      include Vanna
       before_filter :layout_pieces
       def layout_pieces
         @layout_pieces = {:nav => "nav stuff"}  
@@ -50,7 +52,7 @@ in in the controller flow
     end  
 
 ##Comple
-    class PersonasController < ApplicationRevealer
+    class PersonasController < ApplicationPresenter
       def index
         {"main" => {"personas" => Persona.all, :sidebar => sidebar}}
       end
