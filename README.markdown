@@ -49,18 +49,15 @@ in in the controller flow
       end
     end  
 
-##Complex Presenters
-    class ComplexController < ApplicationRevealer  
-      def index  
-        {:main => main, :sidebar => sidebar}  
-      end  
-      def main  
-        {:complexities => Complexity.all}  
-      end  
-      def sidebar  
-        {:advertisements => Advertisement.for(current_user)  
-      end  
-    end  
-
+##Comple
+    class PersonasController < ApplicationRevealer
+      def index
+        {"main" => {"personas" => Persona.all, :sidebar => sidebar}}
+      end
+      def sidebar
+        Persona.all.map{|p| p["catchphrase"]}
+      end
+end
 As a side effect of this model, you can call main and sidebar as explicit JSON methods and get those pieces
-of data.  This unifies your data presentation chain.
+of data.  This unifies your data presentation chain.  So just building the sidebar for your webpage makes
+it available on its own for JSON calls for mobile or AJAX
