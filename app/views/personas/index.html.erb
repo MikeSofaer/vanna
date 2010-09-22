@@ -1,9 +1,14 @@
-{{#div}}
-{{nav}}
-{{/div}}
-{{#div}}
-{{main}}
-{{/div}}
-{{#div}}
-{{footer}}
-{{/div}}
+<div id=main style="width:70%;float:left;border:black 5px solid;">
+  <% main["personas"].each do |persona| %>
+    <ul>
+      <li><%=persona[:name]%></li>
+      <li><%=persona[:catchphrase]%></li>
+    </ul>
+  <% end %>
+</div>
+<div id=sidebar style="width:20%;float:right;border:black 5px solid;">
+  <% main[:sidebar].each do |catchphrase| %>
+    <%=catchphrase%> <br/>
+  <% end %>
+</div>
+
