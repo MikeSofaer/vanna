@@ -4,6 +4,8 @@ module Vanna
     klass.send(:include,  AbstractController::Callbacks)
     klass.send(:include,  AbstractController::Layouts)
     klass.append_view_path "app/views"
+
+    klass.class_eval("def logger; ActionController::Base.logger; end;")
   end
 
   def process_action(method_name, *args)

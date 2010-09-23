@@ -5,7 +5,6 @@ class PersonasController < ApplicationController
   def show(opts = params)
     persona = Persona.named(opts["persona"]).first
     sidebar = friend_catchphrases("personas" => persona["partners"])
-    p sidebar
     {:main => {:persona =>persona, :sidebar => sidebar}}
   end
   def friend_catchphrases(opts=params)
