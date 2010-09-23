@@ -16,10 +16,12 @@ class BasicTest < Test::Unit::TestCase
   
   def setup
     Persona.clear
-    @luis = {:name => "The Fire Eater", :catchphrase => "Hungry like the volcano!", :photo_url => "example.com/img/fire_eater_photo"}
-    @giorgi = {:name => "Mystical Gondola", :catchphrase => "You're gonna get punted!", :photo_url => "example.com/img/mystical_gondola_photo"}
+    @luis = {"name" => "The Fire Eater", "catchphrase" => "Hungry like the volcano!", "photo_url" => "example.com/img/fire_eater_photo", "partners" => ["Mystical Gondola"]}
+    @giorgi = {"name" => "Mystical Gondola", "catchphrase" => "You're gonna get punted!", "photo_url" => "example.com/img/mystical_gondola_photo", "partners" => ["The Fire Eater"]}
+    @miranda = {"name" => "Venus Raygun", "catchphrase" => "Hey, can you dodge lasers?", "photo_url" => "example.com/img/venus_raygun_photo", "partners" => []}
     Persona.create @luis
     Persona.create @giorgi
+    Persona.create @miranda
   end
 
   def test_index_has_layout
@@ -31,21 +33,20 @@ class BasicTest < Test::Unit::TestCase
   def test_index_lists_personas
     header "Accept", 'application/json'
     get "/personas"
-    assert{ JSON(last_response.body)["main"]["personas"].first == {"name"=> "The Fire Eater", "catchphrase"=> "Hungry like the volcano!", "photo_url"=> "example.com/img/fire_eater_photo"}
-}
+    assert{ JSON(last_response.body)["main"]["personas"] == [@luis, @giorgi, @miranda]}
   end
-  def test_index_lists_catchphrases
+  def test_show_lists_partner_catchphrases
     header "Accept", 'application/json'
-    get "/personas"
-    assert{ JSON(last_response.body)["main"]["sidebar"] == ["Hungry like the volcano!", "You're gonna get punted!"] }
+    get "/personas/show?persona=The%20Fire%20Eater"
+    assert{ JSON(last_response.body)["main"]["sidebar"] == ["You're gonna get punted!"] }
   end
-  def test_sidebar_method_works
+  def test_friend_catchphrases_json_works
     header "Accept", 'application/json'
-    get "/personas/sidebar"
-    assert{ JSON(last_response.body) == ["Hungry like the volcano!", "You're gonna get punted!"] }
+    get "/personas/friend_catchphrases?personas=Mystical%20Gondola"
+    assert{ JSON(last_response.body) == ["You're gonna get punted!"] }
   end
   def test_html_has_sidebar
-    get "/personas"
+    get "/personas/show?persona=The%20Fire%20Eater"
     assert{last_response.body.match(/div id=sidebar/) != nil } 
   end
   def test_html_has_nav_content

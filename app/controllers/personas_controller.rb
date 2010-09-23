@@ -1,8 +1,15 @@
 class PersonasController < ApplicationController
   def index
-    {:main => {"personas" => Persona.all, :sidebar => sidebar}}
+    {:main => {"personas" => Persona.all}}
   end
-  def sidebar
-    Persona.all.map{|p| p[:catchphrase]}
+  def show(opts = params)
+    persona = Persona.named(opts["persona"]).first
+    sidebar = friend_catchphrases("personas" => persona["partners"])
+    p sidebar
+    {:main => {:persona =>persona, :sidebar => sidebar}}
+  end
+  def friend_catchphrases(opts=params)
+    names = opts["personas"]
+    Persona.named(names).map{|p| p["catchphrase"]}
   end
 end
