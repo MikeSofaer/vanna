@@ -1,11 +1,7 @@
-require "rack/test"
 require './test/test_helper'
-require 'json'
-require 'wrong'
-require 'wrong/adapters/test_unit'
-require "wrong/message/string_diff"
-Wrong.config[:color] = true
-
+require 'personas_controller'
+require 'app/models/persona'
+PersonasController.append_view_path "test/app/views"
 
 class BasicTest < Test::Unit::TestCase
   include Rack::Test::Methods
