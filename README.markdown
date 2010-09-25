@@ -13,11 +13,11 @@ See [My Blabs post](http://pivotallabs.com/users/msofaer/blog/articles/1423-pres
 
 ##ApplicationController
 
-Change ActionController::Base to Vanna::Base
+Change 'ActionController::Base' to 'Vanna::Base'
 
 ##layouts/application.html.erb
 
-Remove the javascript_include line.  (and if you know what to do to make the helper work, tell me.)
+Remove the javascript_include line.  (and if you know what to do so this isn't necessary, tell me.)
 
 #Usage
 
