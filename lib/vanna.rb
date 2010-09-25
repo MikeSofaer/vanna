@@ -19,4 +19,8 @@ module Vanna
   def html_render(dictionary)
     render(nil, :locals => dictionary)
   end
+  class Base < ActionController::Metal
+    include ActionController::RequestForgeryProtection
+    include Vanna
+  end
 end
