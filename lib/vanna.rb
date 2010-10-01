@@ -29,10 +29,15 @@ module Vanna
       self.response_body = "Over there!"
     end
   end
+
+  def new_resource(url)
+    Redirection.new(url)
+  end
+
   class Redirection
-    attr_accessor :dictionary, :target
-    def initialize(dictionary, target); @dictionary = dictionary; @target = target; end
-    def to_json; @dictionary.to_json; end
+    attr_accessor :target
+    def initialize(target); @target = target; end
+    def to_json; {:url => @target}.to_json; end
     def json_status; "201"; end
   end
   class Base < ActionController::Metal
