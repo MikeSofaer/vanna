@@ -23,24 +23,35 @@ module Vanna
   def html_render(dictionary)
     if dictionary.is_a? Hash
       render(nil, :locals => dictionary)
-    elsif dictionary.is_a? Redirection
-      self.status = "302"
-      self.location = dictionary.target
-      self.response_body = "Over there!"
+    elsif dictionary.is_a? Response
+      self.status = dictionary.html_status 
+      self.location = dictionary.target if dictionary.html_status=~ /3\d\d/
+      self.response_body = dictionary.html_body
     else
       raise InvalidDictionary.new("Vanna cannot render objects of type #{dictionary.class} to html.")
     end
   end
 
-  def redirection_to(url)
-    Redirection.new(url)
+  def CreationFailure(options)
+    Response.new(options.merge(:json_status => "422", :json_body => "Invalid", :html_status => "302"))
   end
 
-  class Redirection
-    attr_accessor :target
-    def initialize(target); @target = target; end
-    def to_json; {:url => @target}.to_json; end
-    def json_status; "201"; end
+  def CreationSuccess(options)
+    Response.new(options.merge(:json_status => "201", :html_status => "302"))
+  end
+
+  class Response
+    def initialize(options); @options = options; end
+    def to_json
+      @options[:json_body] ||
+        {:url => @options[:redirect_to]}.to_json
+    end
+    def html_body
+      @options[:html_body] || ""
+    end
+    def target; @options[:redirect_to]; end
+    def json_status; @options[:json_status]; end
+    def html_status; @options[:html_status]; end
   end
   class Base < ActionController::Metal
     include ActionController::RequestForgeryProtection

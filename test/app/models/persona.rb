@@ -6,12 +6,12 @@ class Persona < Hash
   def self.all
     @@all || [sample]
   end
-  def self.new(hash)
-    Hash.new.merge(hash)
+  def self.build(hash)
+    new.merge(hash.symbolize_keys)
   end
   def self.create(hash)
     @@all ||= []
-	  @@all << new(hash)
+	  @@all << build(hash)
     hash
   end
   def self.clear
@@ -19,6 +19,11 @@ class Persona < Hash
   end
   def self.named(names)
     names = [names] unless names.is_a?(Array)
-    all.select{|p| names.member? p["name"]}
+    all.select{|p| names.member? p[:name]}
+  end
+
+  def save
+    return false unless key? :name
+    @@all << self
   end
 end

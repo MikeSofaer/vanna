@@ -21,6 +21,7 @@ class BasicTest < Test::Unit::TestCase
 
     @linda_params = {:persona =>
       {:name => "Empress Beluga",:catchphrase => "Let's have a WHALE of a time!"}}
+    @bad_params = {:persona => {:catchphrase => "Say my name!"}}
   end
 
   def test_html_index_has_layout_template
@@ -61,16 +62,26 @@ class BasicTest < Test::Unit::TestCase
     assert{last_response.body =~/div id=sidebar/} 
   end
 
-  def test_html_redirects_on_post
+  def test_html_redirects_on_post_success
     post "/personas/create", @linda_params
     assert { last_response.status == 302 }
     assert { last_response.location == "/personas/#{@linda_params[:persona][:name]}"}
   end
-  def test_json_renders_on_post
+  def test_json_renders_on_post_success
     header "Accept", 'application/json'
     post "/personas/create", @linda_params
     assert { last_response.status == 201 }
     assert { JSON(last_response.body) == {"url" => "/personas/#{@linda_params[:persona][:name]}"}}
   end
 
+  def test_html_redirects_on_post_failure
+    post "/personas/create", @bad_params
+    assert { last_response.status == 302 }
+    assert { last_response.location == "/personas/new"}
+  end
+  def test_json_rejects_on_post_failure
+    header "Accept", 'application/json'
+    post "/personas/create", @bad_params
+    assert { last_response.status == 422 }
+  end
 end
