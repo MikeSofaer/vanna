@@ -20,11 +20,16 @@ class BasicTest < Test::Unit::TestCase
     Persona.create @miranda
   end
 
-  def test_html_index_has_layout
+  def test_html_index_has_layout_template
     get "/personas"
-	  assert{ last_response.body =~ /Nav bar here/}
+	  assert{ last_response.body =~ /<title>Vanna Test/}
   end
   
+  def test_html_index_renders_layout_data_content
+    get "/personas"
+    assert{ last_response.body =~/Nav bar here/}
+  end
+
   def test_json_index_has_no_layout
     header "Accept", 'application/json'
     get "/personas"
@@ -48,12 +53,8 @@ class BasicTest < Test::Unit::TestCase
     assert{ JSON(last_response.body)["friend_catchphrases"] == ["You're gonna get punted!"] }
   end
 
- def test_html_has_sidebar
+ def test_show_template_is_rendered
     get "/personas/show?persona=The%20Fire%20Eater"
     assert{last_response.body =~/div id=sidebar/} 
-  end
-  def test_html_has_nav_content
-    get "/personas"
-    assert{ last_response.body =~/Nav bar here/}
   end
 end
