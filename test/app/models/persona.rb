@@ -1,5 +1,5 @@
 class Persona < Hash
-@@all = nil
+  @@all = nil
   def self.sample
     {"name" => "Mark", "catchphrase" => "Don't look at me", "photo_url" => "/dev/null", "team_members" => []}
   end
@@ -11,7 +11,8 @@ class Persona < Hash
   end
   def self.create(hash)
     @@all ||= []
-	@@all << new(hash)
+	  @@all << new(hash)
+    hash
   end
   def self.clear
     @@all = nil

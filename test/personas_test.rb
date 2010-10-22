@@ -18,6 +18,9 @@ class BasicTest < Test::Unit::TestCase
     Persona.create @luis
     Persona.create @giorgi
     Persona.create @miranda
+
+    @linda_params = {:persona =>
+      {:name => "Empress Beluga",:catchphrase => "Let's have a WHALE of a time!"}}
   end
 
   def test_html_index_has_layout_template
@@ -57,4 +60,17 @@ class BasicTest < Test::Unit::TestCase
     get "/personas/show?persona=The%20Fire%20Eater"
     assert{last_response.body =~/div id=sidebar/} 
   end
+
+  def test_html_redirects_on_post
+    post "/personas/create", @linda_params
+    assert { last_response.status == 302 }
+    assert { last_response.location == "/personas/#{@linda_params[:persona][:name]}"}
+  end
+  def test_json_renders_on_post
+    header "Accept", 'application/json'
+    post "/personas/create", @linda_params
+    assert { last_response.status == 201 }
+    assert { JSON(last_response.body) == {"url" => "/personas/#{@linda_params[:persona][:name]}"}}
+  end
+
 end

@@ -32,7 +32,7 @@ module Vanna
     end
   end
 
-  def new_resource(url)
+  def redirection_to(url)
     Redirection.new(url)
   end
 

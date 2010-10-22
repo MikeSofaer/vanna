@@ -18,16 +18,5 @@ class BasicTest < Test::Unit::TestCase
     get "/"
     assert{ last_response.body =~  /Here is some text: hello/ }
   end
-  def test_html_redirects_on_post
-    post "/welcome/create"
-    assert { last_response.status == 302 }
-    assert { last_response.location == "/link_to_candy"}
-  end
-  def test_json_renders_on_post
-    header "Accept", 'application/json'
-    post "/welcome/create"
-    assert { last_response.status == 201 }
-    assert { JSON(last_response.body) == {"url" => "/link_to_candy"}}
-  end
 end
 
