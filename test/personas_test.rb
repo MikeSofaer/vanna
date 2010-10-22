@@ -23,18 +23,18 @@ class BasicTest < Test::Unit::TestCase
   def test_index_has_layout
     header "Accept", 'application/json'
     get "/personas"
-	assert{ JSON(last_response.body).keys.sort == ["nav", "main", "footer"].sort }
+	assert{ JSON(last_response.body).keys.sort == ["nav", "personas", "footer"].sort }
   end
   
   def test_index_lists_personas
     header "Accept", 'application/json'
     get "/personas"
-    assert{ JSON(last_response.body)["main"]["personas"] == [@luis, @giorgi, @miranda]}
+    assert{ JSON(last_response.body)["personas"] == [@luis, @giorgi, @miranda]}
   end
   def test_show_lists_partner_catchphrases
     header "Accept", 'application/json'
     get "/personas/show?persona=The%20Fire%20Eater"
-    assert{ JSON(last_response.body)["main"]["sidebar"] == ["You're gonna get punted!"] }
+    assert{ JSON(last_response.body)["friend_catchphrases"] == ["You're gonna get punted!"] }
   end
   def test_friend_catchphrases_json_works
     header "Accept", 'application/json'

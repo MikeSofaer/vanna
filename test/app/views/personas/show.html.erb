@@ -1,12 +1,11 @@
 <div id=main style="width:70%;float:left;border:black 5px solid;">
-  <% persona = main[:persona] %>
   <ul>
     <li><%=persona[:name]%></li>
     <li><%=persona[:catchphrase]%></li>
   </ul>
 </div>
 <div id=sidebar style="width:20%;float:right;border:black 5px solid;">
-  <% main[:sidebar].each do |catchphrase| %>
+  <% friend_catchphrases.each do |catchphrase| %>
     <%=catchphrase%> <br/>
   <% end %>
 </div>
