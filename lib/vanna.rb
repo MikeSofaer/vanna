@@ -11,7 +11,7 @@ module Vanna
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do
       dictionary = send_action(method_name, *args)
-      dictionary = @layout_pieces.merge(dictionary) if @layout_pieces && dictionary.is_a?(Hash)
+      dictionary = @layout_pieces.merge(dictionary) if @layout_pieces && dictionary.is_a?(Hash) && request.format.symbol != :json
       if request.format.symbol == :json
         self.response_body = dictionary.to_json
         self.status = dictionary.json_status if dictionary.respond_to?(:json_status)
@@ -27,6 +27,8 @@ module Vanna
       self.status = "302"
       self.location = dictionary.target
       self.response_body = "Over there!"
+    else
+      raise InvalidDictionary.new("Vanna cannot render objects of type #{dictionary.class} to html.")
     end
   end
 
@@ -44,4 +46,7 @@ module Vanna
     include ActionController::RequestForgeryProtection
     include Vanna
   end
+
+  class Bankrupt < StandardError; end
+  class InvalidDictionary < Bankrupt; end
 end

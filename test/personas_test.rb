@@ -20,33 +20,40 @@ class BasicTest < Test::Unit::TestCase
     Persona.create @miranda
   end
 
-  def test_index_has_layout
-    header "Accept", 'application/json'
+  def test_html_index_has_layout
     get "/personas"
-	assert{ JSON(last_response.body).keys.sort == ["nav", "personas", "footer"].sort }
+	  assert{ last_response.body =~ /Nav bar here/}
   end
   
-  def test_index_lists_personas
+  def test_json_index_has_no_layout
     header "Accept", 'application/json'
     get "/personas"
-    assert{ JSON(last_response.body)["personas"] == [@luis, @giorgi, @miranda]}
+	  assert{ JSON(last_response.body).keys.sort == ["personas"]}
   end
-  def test_show_lists_partner_catchphrases
-    header "Accept", 'application/json'
-    get "/personas/show?persona=The%20Fire%20Eater"
-    assert{ JSON(last_response.body)["friend_catchphrases"] == ["You're gonna get punted!"] }
-  end
-  def test_friend_catchphrases_json_works
+ 
+  def test_data_only_json_method
     header "Accept", 'application/json'
     get "/personas/friend_catchphrases?personas=Mystical%20Gondola"
     assert{ JSON(last_response.body) == ["You're gonna get punted!"] }
   end
-  def test_html_has_sidebar
+ 
+  def test_data_only_method_does_not_render_html
+    get "/personas/friend_catchphrases?personas=Mystical%20Gondola"
+    assert {last_response.body =~ /Vanna::InvalidDictionary/}
+  end
+
+  def test_controller_can_call_other_controller_methods
+    header "Accept", 'application/json'
     get "/personas/show?persona=The%20Fire%20Eater"
-    assert{last_response.body.match(/div id=sidebar/) != nil } 
+    assert{ JSON(last_response.body)["friend_catchphrases"] == ["You're gonna get punted!"] }
+  end
+
+ def test_html_has_sidebar
+    get "/personas/show?persona=The%20Fire%20Eater"
+    assert{last_response.body =~/div id=sidebar/} 
   end
   def test_html_has_nav_content
     get "/personas"
-    assert{ last_response.body.match(/Nav bar here/) }
+    assert{ last_response.body =~/Nav bar here/}
   end
 end
