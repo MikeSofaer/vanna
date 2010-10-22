@@ -9,7 +9,7 @@ class BasicTest < Test::Unit::TestCase
   def app
     ActionPresenter::Application
   end
-  
+
   def setup
     Persona.clear
     @luis = {"name" => "The Fire Eater", "catchphrase" => "Hungry like the volcano!", "photo_url" => "example.com/img/fire_eater_photo", "partners" => ["Mystical Gondola"]}
@@ -22,9 +22,9 @@ class BasicTest < Test::Unit::TestCase
 
   def test_html_index_has_layout_template
     get "/personas"
-	  assert{ last_response.body =~ /<title>Vanna Test/}
+    assert{ last_response.body =~ /<title>Vanna Test/}
   end
-  
+
   def test_html_index_renders_layout_data_content
     get "/personas"
     assert{ last_response.body =~/Nav bar here/}
@@ -33,15 +33,15 @@ class BasicTest < Test::Unit::TestCase
   def test_json_index_has_no_layout
     header "Accept", 'application/json'
     get "/personas"
-	  assert{ JSON(last_response.body).keys.sort == ["personas"]}
+    assert{ JSON(last_response.body).keys.sort == ["personas"]}
   end
- 
+
   def test_data_only_json_method
     header "Accept", 'application/json'
     get "/personas/friend_catchphrases?personas=Mystical%20Gondola"
     assert{ JSON(last_response.body) == ["You're gonna get punted!"] }
   end
- 
+
   def test_data_only_method_does_not_render_html
     get "/personas/friend_catchphrases?personas=Mystical%20Gondola"
     assert {last_response.body =~ /Vanna::InvalidDictionary/}
@@ -53,7 +53,7 @@ class BasicTest < Test::Unit::TestCase
     assert{ JSON(last_response.body)["friend_catchphrases"] == ["You're gonna get punted!"] }
   end
 
- def test_show_template_is_rendered
+  def test_show_template_is_rendered
     get "/personas/show?persona=The%20Fire%20Eater"
     assert{last_response.body =~/div id=sidebar/} 
   end
