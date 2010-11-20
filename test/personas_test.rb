@@ -59,7 +59,7 @@ class BasicTest < Test::Unit::TestCase
 
   def test_show_template_is_rendered
     get "/personas/show?persona=The%20Fire%20Eater"
-    assert{last_response.body =~/div id=sidebar/} 
+    assert{last_response.body =~/div id=sidebar/}
   end
 
   def test_html_redirects_on_post_success
@@ -83,5 +83,6 @@ class BasicTest < Test::Unit::TestCase
     header "Accept", 'application/json'
     post "/personas/create", @bad_params
     assert { last_response.status == 422 }
+    assert { JSON(last_response.body) == {"message" => "Could not create Persona."}}
   end
 end

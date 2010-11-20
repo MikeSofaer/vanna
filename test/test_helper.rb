@@ -6,7 +6,7 @@ require 'rails/test_help'
 require 'json'
 require 'wrong'
 require 'wrong/adapters/test_unit'
-require "wrong/message/string_diff"
+require "wrong/message/string_comparison"
 require "rack/test"
 Wrong.config[:color] = true
 ActionPresenter::Application.initialize!
