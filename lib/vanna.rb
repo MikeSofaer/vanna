@@ -37,9 +37,6 @@ module Vanna
         if request.format.symbol == :html
           raise InvalidDictionary.new("You need to put this in a hash with a name to render it to HTML") unless controller_response.is_a? Hash
           dictionary = @layout_pieces.merge(controller_response) if @layout_pieces
-          #block_hash = self.class.instance_variable_get("@post_json_block_hash".to_sym)
-          #postprocessor = block_hash[method_name] if block_hash
-          #dictionary = postprocessor.call(dictionary) if postprocessor
           render(nil, :locals => dictionary)
         else
           self.response_body = controller_response.to_json
