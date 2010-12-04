@@ -6,66 +6,52 @@ module Vanna
     klass.append_view_path "app/views"
 
     klass.class_eval %{
+
+    html_class_name = self.name + "HTML"
     def logger
       ActionController::Base.logger
     end
 
-    def self.html(post_json_block_hash)
-      @post_json_block_hash = post_json_block_hash
+    def self.html(&block)
+      html_class = Class.new
+      html_class.instance_eval &block
+      @html_class = html_class
     end
-    def self.Redirection(options)
-      options[:target] = options.delete(:to)
-      options[:status] ||= 302
-      Response.new(options)
-    end
-    }
+   }
   end
 
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do
-      dictionary = send_action(method_name, *args)
+      controller_to_call = self
+      controller_response = controller_to_call.send_action(method_name, *args)
+      html_class = self.class.instance_variable_get("@html_class".to_sym)
+      if request.format.symbol == :html && html_class && html_class.respond_to?(method_name)
+        controller_response = html_class.send(method_name, controller_response)
+      end
 
-      if request.format.symbol == :json
-        self.response_body = dictionary.to_json
-        self.status = dictionary.status if dictionary.respond_to?(:status)
+      if controller_response.is_a? Response
+        self.status = controller_response.status
+        self.location = controller_response.location if controller_response.location
+        self.response_body = controller_response.body.to_json
       else
-        dictionary = @layout_pieces.merge(dictionary) if @layout_pieces && dictionary.is_a?(Hash)
-        block_hash = self.class.instance_variable_get("@post_json_block_hash".to_sym)
-        postprocessor = block_hash[method_name] if block_hash
-        dictionary = postprocessor.call(dictionary) if postprocessor
-        html_render(dictionary)
+        if request.format.symbol == :html
+          raise InvalidDictionary.new("You need to put this in a hash with a name to render it to HTML") unless controller_response.is_a? Hash
+          dictionary = @layout_pieces.merge(controller_response) if @layout_pieces
+          #block_hash = self.class.instance_variable_get("@post_json_block_hash".to_sym)
+          #postprocessor = block_hash[method_name] if block_hash
+          #dictionary = postprocessor.call(dictionary) if postprocessor
+          render(nil, :locals => dictionary)
+        else
+          self.response_body = controller_response.to_json
+        end
       end
     end
   end
-  def html_render(dictionary)
-    if dictionary.is_a? Hash
-      render(nil, :locals => dictionary)
-    elsif dictionary.is_a? Response
-      self.status = dictionary.status
-      if dictionary.target
-        self.location = dictionary.target
-        self.response_body = "Redirected!"
-      else
-        self.response_body = dictionary.body if dictionary.body
-      end
-    else
-      raise InvalidDictionary.new("Vanna cannot render objects of type #{dictionary.class} to html.")
-    end
-  end
-
-  def CreationFailure(options)
-    Response.new({:status => 422, :body => {:message => "Invalid"}}.merge options)
-  end
-
-  def CreationSuccess(options)
-    Response.new(options.merge(:status => 201))
-  end
-
 
   class Response
     def initialize(options); @options = options; end
     def status; @options[:status]; end
-    def target; @options[:target]; end
+    def location; @options[:location]; end
     def body; @options[:body]; end
     def to_json; body.to_json; end
   end

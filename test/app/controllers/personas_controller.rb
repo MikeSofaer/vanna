@@ -17,18 +17,35 @@ class PersonasController < ApplicationController
   def create(opts=params)
     persona = Persona.build(opts[:persona])
     if persona.save
-      CreationSuccess(:body => {:url => "/personas/#{persona[:name]}"})
+      Response.new(:status => 201, :body => {:url => "/personas/#{persona[:name]}"})
     else
-      CreationFailure(:body => {:message => "Could not create Persona."})
+      Response.new(:status => 422, :body => {:message => "Could not create Persona."})
     end
   end
-
-  html(
-    "create" => lambda {|json_response|
+  html do
+    def create(json_response)
       if json_response.status == 201
-        Redirection :to => json_response.body[:url]
+        Response.new(:status => 302, :location => json_response.body[:url])
       else
-        Redirection :to => "/personas/new"
+        Response.new(:status => 302, :location => "/personas/new")
       end
-  })
+    end
+  end
 end
+
+=begin
+
+You can also do this:
+
+class PersonasHTMLController < ApplicationController::Base
+  def create
+    response = PersonasController.new.create(params)
+    if response.status == 201
+      redirect_to response.body[:url]
+    else
+      redirect_to "/personas/new"
+    end
+  end
+end
+
+=end
