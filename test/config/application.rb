@@ -1,12 +1,18 @@
-require 'config/boot'
+require 'rubygems'
 
-require "action_controller/railtie"
-require "rails/test_unit/railtie"
-require "action_mailer/railtie"
-require "active_resource/railtie"
-
+gemfile = File.expand_path('../../Gemfile', __FILE__)
+begin
+  ENV['BUNDLE_GEMFILE'] = gemfile
+  require 'bundler'
+  Bundler.setup
+rescue Bundler::GemNotFound => e
+  STDERR.puts e.message
+  STDERR.puts "Try running `bundle install`."
+  exit!
+end if File.exist?(gemfile)
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+require "action_controller/railtie"
 module ActionPresenter
   class Application < Rails::Application
     config.active_support.deprecation = :stdout

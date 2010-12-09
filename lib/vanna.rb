@@ -4,29 +4,31 @@ module Vanna
     klass.send(:include,  AbstractController::Callbacks)
     klass.send(:include,  AbstractController::Layouts)
     klass.append_view_path "app/views"
-
-    klass.class_eval %{
-
-    html_class_name = self.name + "HTML"
-    def logger
-      ActionController::Base.logger
+  
+    klass.class_eval do
+      def logger
+        ActionController::Base.logger
+      end
+     
+      def self.post_processors
+        @post_processors ||= {}
+      end
+      
+      def self.post_process(symbol, &block)
+        pclass = Class.new
+        pclass.class_eval &block
+        post_processors[symbol] = pclass.new
+      end
     end
-
-    def self.html(&block)
-      html_class = Class.new
-      html_class.instance_eval &block
-      @html_class = html_class
-    end
-   }
   end
-
+  
   def process_action(method_name, *args)
     run_callbacks(:process_action, method_name) do
-      controller_to_call = self
-      controller_response = controller_to_call.send_action(method_name, *args)
-      html_class = self.class.instance_variable_get("@html_class".to_sym)
-      if request.format.symbol == :html && html_class && html_class.respond_to?(method_name)
-        controller_response = html_class.send(method_name, controller_response)
+      controller_response = send_action(method_name, *args)
+
+      post_processor = self.class.post_processors[request.format.symbol]
+      if post_processor && post_processor.respond_to?(method_name)
+        controller_response = post_processor.send(method_name, controller_response)
       end
 
       if controller_response.is_a? Response
@@ -36,7 +38,11 @@ module Vanna
       else
         if request.format.symbol == :html
           raise InvalidDictionary.new("You need to put this in a hash with a name to render it to HTML") unless controller_response.is_a? Hash
-          dictionary = @layout_pieces.merge(controller_response) if @layout_pieces
+          dictionary = if @layout_pieces 
+                         @layout_pieces.merge(controller_response)
+                       else
+                         controller_response 
+                       end
           render(nil, :locals => dictionary)
         else
           self.response_body = controller_response.to_json
@@ -57,6 +63,5 @@ module Vanna
     include Vanna
   end
 
-  class Bankrupt < StandardError; end
-  class InvalidDictionary < Bankrupt; end
+  class InvalidDictionary < StandardError; end
 end

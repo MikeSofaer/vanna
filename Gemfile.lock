@@ -1,3 +1,10 @@
+PATH
+  remote: .
+  specs:
+    vanna (0.0)
+      json
+      rails (>= 3.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -6,7 +13,7 @@ GEM
       sexp_processor (>= 3.0.0)
     RubyInline (3.8.6)
       ZenTest (~> 4.3)
-    ZenTest (4.4.0)
+    ZenTest (4.4.1)
     abstract (1.0.0)
     actionmailer (3.0.3)
       actionpack (= 3.0.3)
@@ -85,7 +92,7 @@ GEM
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
-    wrong (0.4.5)
+    wrong (0.5.0)
       ParseTree (~> 3.0)
       diff-lcs (~> 1.1.2)
       file-tail (~> 1.0)
@@ -101,6 +108,7 @@ PLATFORMS
 
 DEPENDENCIES
   json
-  rack-test
-  rails (>= 3.0.0.rc2)
-  wrong
+  rack-test (>= 0.5.6)
+  rails (>= 3.0.0)
+  vanna!
+  wrong (>= 0.5.0)
