@@ -77,7 +77,7 @@ class BasicTest < Test::Unit::TestCase
   def test_html_redirects_on_post_failure
     post "/personas/create", @bad_params
     assert { last_response.status == 302 }
-    assert { last_response.location == "/personas/new"}
+    assert { last_response.location == "/"}
   end
   def test_json_rejects_on_post_failure
     header "Accept", 'application/json'

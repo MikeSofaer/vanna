@@ -27,7 +27,7 @@ class PersonasController < ApplicationController
       if json_response.status == 201
         Response.new(:status => 302, :location => json_response.body[:url])
       else
-        Response.new(:status => 302, :location => "/personas/new")
+        Response.new(:status => 302, :location => root_path)
       end
     end
   end

@@ -62,6 +62,7 @@ module Vanna
   class Base < ActionController::Metal
     include ActionController::RequestForgeryProtection
     include Vanna
+    include Rails.application.routes.url_helpers
   end
 
   class InvalidDictionary < StandardError; end
