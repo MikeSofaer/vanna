@@ -35,7 +35,7 @@ module Vanna
       if controller_response.is_a? Response
         self.status = controller_response.status
         self.location = controller_response.location if controller_response.location
-        self.response_body = controller_response.body.to_json
+        self.response_body = controller_response.to_json
       else
         if request.format.symbol == :html
           raise InvalidDictionary.new("You need to put this in a hash with a name to render it to HTML") unless controller_response.is_a? Hash
@@ -58,6 +58,7 @@ module Vanna
     def location; @options[:location]; end
     def body; @options[:body]; end
     def to_json; body.to_json; end
+    def [](key); body[key]; end
   end
   class Base < ActionController::Metal
     include ActionController::RequestForgeryProtection

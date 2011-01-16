@@ -25,7 +25,7 @@ class PersonasController < ApplicationController
   post_process :html do
     def post_create(json_response)
       if json_response.status == 201
-        Response.new(:status => 302, :location => json_response.body[:url])
+        Response.new(:status => 302, :location => json_response[:url])
       else
         Response.new(:status => 302, :location => root_path)
       end
