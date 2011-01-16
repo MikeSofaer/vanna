@@ -3,7 +3,7 @@ require 'personas_controller'
 require 'app/models/persona'
 PersonasController.append_view_path "test/app/views"
 
-class BasicTest < Test::Unit::TestCase
+class PersonasTest < Test::Unit::TestCase
   include Rack::Test::Methods
 
   def app
@@ -84,5 +84,14 @@ class BasicTest < Test::Unit::TestCase
     post "/personas/create", @bad_params
     assert { last_response.status == 422 }
     assert { JSON(last_response.body) == {"message" => "Could not create Persona."}}
+  end
+
+  def test_js_tag_renders
+    get "/personas"
+    assert {last_response.body =~ /javascript/}
+  end
+  def test_css_tag_renders
+    get "/personas"
+    assert {last_response.body =~ /stylesheets/}
   end
 end

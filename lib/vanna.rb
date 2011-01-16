@@ -64,6 +64,9 @@ module Vanna
     include ActionController::RequestForgeryProtection
     include Vanna
     include Rails.application.routes.url_helpers
+    include AbstractController::AssetPaths
+    self.javascripts_dir = "javascripts"
+    self.assets_dir = "public"
   end
 
   class InvalidDictionary < StandardError; end

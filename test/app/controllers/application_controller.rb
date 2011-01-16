@@ -1,6 +1,5 @@
 require './lib/vanna'
 class ApplicationController < Vanna::Base
-  include Vanna
   before_filter :setup_layout
 
   def setup_layout

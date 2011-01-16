@@ -15,10 +15,6 @@ See [My Blabs post](http://pivotallabs.com/users/msofaer/blog/articles/1423-pres
 
 Change 'ActionController::Base' to 'Vanna::Base'
 
-##layouts/application.html.erb
-
-Remove the javascript_include line.  (and if you know what to do so this isn't necessary, tell me.)
-
 #Usage
 
 ##Controllers
