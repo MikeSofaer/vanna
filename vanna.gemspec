@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = "vanna"
-  s.version   = 0.1.0
+  s.version   = "0.1.0"
   s.authors   = ["Michael Sofaer"]
   s.email     = "msofaer@pivotallabs.com"
   s.homepage  = "http://github.com/MikeSofaer/vanna"
