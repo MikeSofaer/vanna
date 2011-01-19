@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    vanna (0.0)
+    vanna (0.1.0)
       json
       rails (>= 3.0.0)
 

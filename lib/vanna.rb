@@ -63,10 +63,13 @@ module Vanna
   class Base < ActionController::Metal
     include ActionController::RequestForgeryProtection
     include Vanna
-    include Rails.application.routes.url_helpers
     include AbstractController::AssetPaths
     self.javascripts_dir = "javascripts"
     self.assets_dir = "public"
+    def self.inherited(subclass)
+      super
+      subclass.send(:include, Rails.application.routes.url_helpers)
+    end
   end
 
   class InvalidDictionary < StandardError; end
