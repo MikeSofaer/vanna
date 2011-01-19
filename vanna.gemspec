@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name      = "vanna"
-  s.version   = 0.0
+  s.version   = 0.1.0
   s.authors   = ["Michael Sofaer"]
   s.email     = "msofaer@pivotallabs.com"
   s.homepage  = "http://github.com/MikeSofaer/vanna"
@@ -14,7 +14,7 @@ explicitly override the params hash so you can construct dictionaries from other
   s.files      = Dir['lib/*']
   s.test_files = Dir['test/**/*.rb']
 
-  s.has_rdoc = false 
+  s.has_rdoc = false
 
   s.add_dependency "json"
   s.add_dependency 'rails', '>=3.0.0'
