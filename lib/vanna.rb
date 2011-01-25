@@ -1,3 +1,4 @@
+require 'action_controller'
 module Vanna
   def self.included(klass)
     raise "#{klass.name} does not inherit from ActionController::Metal" unless klass.ancestors.include?(ActionController::Metal)
