@@ -51,3 +51,6 @@ Since there are no instance variables, anything that needs to be available in a 
         Persona.named(names).map{|p| p["catchphrase"]}
       end
     end
+
+#Thanks
+Thanks to *Affine Systems*(http://affinesystems.com) for sponsoring some of the development of this library.
