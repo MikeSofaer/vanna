@@ -18,9 +18,8 @@ module Vanna
       end
 
       def self.post_process(symbol, &block)
-        pclass = Class.new(self)
+        pclass = post_processors[symbol] ||= Class.new(self)
         pclass.class_eval &block
-        post_processors[symbol] = pclass.new
       end
     end
   end
@@ -30,9 +29,12 @@ module Vanna
       controller_response = send_action(method_name, *args)
       pp_method = ("post_" + method_name.to_s).to_sym
 
-      post_processor = self.class.post_processors[request.format.symbol]
-      if post_processor && post_processor.respond_to?(pp_method)
-        controller_response = post_processor.send(pp_method, controller_response)
+      post_processor_class = self.class.post_processors[request.format.symbol]
+      if post_processor_class
+        post_processor = post_processor_class.new
+        if post_processor.respond_to?(pp_method)
+          controller_response = post_processor.send(pp_method, controller_response)
+        end
       end
 
       if controller_response.is_a? Response

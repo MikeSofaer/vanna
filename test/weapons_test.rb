@@ -22,6 +22,11 @@ class WaponsTest < Test::Unit::TestCase
     post "/weapons/create", {:power => 10, :punch => 32}
     assert { last_response.status == 301 }
     assert { last_response.location == "/weapons/1" }
+  end
 
+  def test_update_redirect
+    post "/weapons/update", {:weapon => {:id => 1, :power => 100}}
+    assert { last_response.status == 301 }
+    assert { last_response.location == "/weapons" }
   end
 end
