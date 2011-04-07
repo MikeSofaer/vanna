@@ -1,6 +1,6 @@
 require 'action_controller'
-require 'lib/vanna/default_return_codes'
-require 'lib/vanna/default_redirects'
+require 'vanna/default_return_codes'
+require 'vanna/default_redirects'
 module Vanna
   def self.included(klass)
     raise "#{klass.name} does not inherit from ActionController::Metal" unless klass.ancestors.include?(ActionController::Metal)
