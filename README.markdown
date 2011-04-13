@@ -21,11 +21,29 @@ See [My Blabs post](http://pivotallabs.com/users/msofaer/blog/articles/1423-pres
 
 Change 'ActionController::Base' to 'Vanna::Base'
 
+It you want to use Devise, do this:
+    include Devise::Controllers::Helpers
+
+And then you can do this:
+    before_filter :authenticate_user!
+
 #Usage
 
 ##Controllers
 
 Controllers normally return hashes of the data you want to render.  Don't call render from inside a controller.  If a controller uses params, use (opts=params) in the signature, so it can be called from other controllers.  Use other controller methods to construct the full page dictionary
+
+##Redirects
+
+Your happy path redirects work by putting a line in your controller telling Vanna what to do after a successful POST.
+    redirect_on :create, :to => :index
+
+For more complex logic, you write a post-processor block:
+    post_process :html do
+      def post_create(json_response)
+        Response.new(:status => 302, :location => path_in_another_controller(json_response[:some_id])
+      end
+    end
 
 ##Views
 
