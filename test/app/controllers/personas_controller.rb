@@ -1,4 +1,5 @@
 class PersonasController < ApplicationController
+  helper :personas
   def index
     {:personas => Persona.all}
   end

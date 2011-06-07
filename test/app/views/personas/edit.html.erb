@@ -1,0 +1,11 @@
+Edit Page
+<%= random_laser %>
+<% form_tag "/personas/#{persona.id}" do %>
+  <p>
+    <% label_tag "Rename #{persona[:name]}:" %>
+    <% text_field_tag :name, persona[:name] %>
+  </p>
+  
+  <% submit_tag %>
+<% end %>
+  
