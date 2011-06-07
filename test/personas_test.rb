@@ -94,4 +94,9 @@ class PersonasTest < Test::Unit::TestCase
     get "/personas"
     assert {last_response.body =~ /stylesheets/}
   end
+  
+  def test_helpers_are_included
+    get "/personas/edit/0"
+    assert {last_response.body =~ /LASERS/}
+  end
 end

@@ -22,6 +22,12 @@ class PersonasController < ApplicationController
       Response.new(:status => 422, :body => {:message => "Could not create Persona."})
     end
   end
+  
+  def edit(opts=params)
+    persona = Persona.all[ opts[:id].to_i ]
+    {:persona => persona}
+  end
+    
   post_process :html do
     def post_create(json_response)
       if json_response.status == 201

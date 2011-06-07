@@ -13,3 +13,8 @@ ActionPresenter::Application.initialize!
 require 'application_controller'
 ApplicationController.append_view_path "test/app/views"
 require 'pp'
+
+unless defined?(Test::Unit::AssertionFailedError)
+  class Test::Unit::AssertionFailedError < ActiveSupport::TestCase::Assertion
+  end
+end
