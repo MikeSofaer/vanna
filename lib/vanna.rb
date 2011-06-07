@@ -69,7 +69,7 @@ module Vanna
     include ActionController::RequestForgeryProtection
     include Vanna
     include AbstractController::AssetPaths
-    include ActionController::Helpers
+    # include ActionController::Helpers
     self.javascripts_dir = "javascripts"
     self.assets_dir = "public"
     
