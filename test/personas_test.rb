@@ -92,6 +92,8 @@ class PersonasTest < Test::Unit::TestCase
   end
   def test_css_tag_renders
     get "/personas"
-    assert (last_response.body =~ /stylesheets/)
+
+    assert last_response.status != 500 , "should not fail"
+    assert last_response.body =~ /stylesheets/, "does not contain stylesheets:\n" + last_response.body
   end
 end

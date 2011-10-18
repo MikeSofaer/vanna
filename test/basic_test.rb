@@ -1,9 +1,7 @@
 require './test/test_helper'
 require 'welcome_controller'
-#require 'wrong' #
-#require "wrong/message/string_comparison"
 require 'pp' #
-#include Wrong
+
 
 WelcomeController.append_view_path "test/app/views"
 
@@ -18,10 +16,9 @@ class BasicTest < Test::Unit::TestCase
     header "Accept", 'application/json'
     get "/"
     x = JSON(last_response.body)
-#    pp x
     y = {"text" => "hello"}
-#    pp x == y
-    assert  x == y
+    print "from response got:" +PP.pp(x, "")  + " expected :" + PP.pp(y, "") + "\n"
+    assert  (x == y)
   end
   def test_html_renders_template
     get "/"

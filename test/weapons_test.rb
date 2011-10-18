@@ -15,6 +15,7 @@ class WaponsTest < Test::Unit::TestCase
     header "Accept", 'application/json'
     post "/weapons/create", {:power => 10, :punch => 32}
     print "last_response.status " + last_response.status.to_s() + "\n"
+    print last_response.body + "\n"
     assert ( last_response.status == 201 )
     assert ( JSON(last_response.body)["id"] == 1)
   end
