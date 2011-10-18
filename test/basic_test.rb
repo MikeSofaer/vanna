@@ -1,5 +1,10 @@
 require './test/test_helper'
 require 'welcome_controller'
+#require 'wrong' #
+#require "wrong/message/string_comparison"
+require 'pp' #
+#include Wrong
+
 WelcomeController.append_view_path "test/app/views"
 
 class BasicTest < Test::Unit::TestCase
@@ -12,11 +17,15 @@ class BasicTest < Test::Unit::TestCase
   def test_gets_json
     header "Accept", 'application/json'
     get "/"
-    assert{ JSON(last_response.body) == {"text" => "hello"} }
+    x = JSON(last_response.body)
+#    pp x
+    y = {"text" => "hello"}
+#    pp x == y
+    assert  x == y
   end
   def test_html_renders_template
     get "/"
-    assert{ last_response.body =~  /Here is some text: hello/ }
+    assert (last_response.body =~  /Here is some text: hello/ )
   end
 end
 

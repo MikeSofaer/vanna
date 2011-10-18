@@ -1,9 +1,8 @@
 source 'http://rubygems.org'
-
+gem 'rails', '3.1.1'
 gemspec
-gem "turn", "~> 0.8.3"
-gem "minitest", "~> 2.6.1"
-gem 'wrong'
 gem 'test-unit'
 gem 'rack-test'
 gem 'actionpack'
+
+
