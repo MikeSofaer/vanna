@@ -18,8 +18,10 @@ explicitly override the params hash so you can construct dictionaries from other
 
   s.add_dependency "json"
   s.add_dependency 'rails', '>=3.0.0'
+  s.add_dependency 'minitest', '>= 2.6.1'
   s.add_development_dependency 'rack-test', '>= 0.5.6'
-  s.add_development_dependency 'wrong', ">=0.5.0"
+  s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'actionpack'
 
 end
 

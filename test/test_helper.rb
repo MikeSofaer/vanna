@@ -1,15 +1,36 @@
 ENV["RAILS_ENV"] = "test"
 $LOAD_PATH.unshift './test'
 $LOAD_PATH.unshift './test/app/controllers'
-require 'config/application'
-require 'rails/test_help'
+ # for application_controller
+require 'rubygems'
+#gem 'minitest' # ensures you're using the gem, and not the built in MT
+#gem 'test-unit'
+#gem 'wrong'
+
+#require 'minitest'
+#require 'minitest/autorun'
+require 'test/unit'
+require 'rails'
+require 'bundler'
+
+
+#require 'rails/test_help'
 require 'json'
-require 'wrong'
-require 'wrong/adapters/test_unit'
-require "wrong/message/string_comparison"
+#require 'wrong' #
+#require "wrong/message/string_comparison"
+#require 'wrong/adapters/test_unit' ##You are using MiniTest's compatibility layer, not the real Test::Unit.
+#require "action_controller/railtie"
+
 require "rack/test"
-Wrong.config[:color] = true
-ActionPresenter::Application.initialize!
 require 'application_controller'
-ApplicationController.append_view_path "test/app/views"
+
+require 'config/application'
+
+#Wrong.config[:color] = true
 require 'pp'
+
+#pp ActionPresenter
+#pp ActionPresenter::Application
+ActionPresenter::Application.initialize!
+ApplicationController.append_view_path "test/app/views"
+

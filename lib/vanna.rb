@@ -1,6 +1,7 @@
 require 'action_controller'
 require 'vanna/default_return_codes'
 require 'vanna/default_redirects'
+require 'pp'
 module Vanna
   def self.included(klass)
     raise "#{klass.name} does not inherit from ActionController::Metal" unless klass.ancestors.include?(ActionController::Metal)
@@ -75,7 +76,17 @@ module Vanna
       super
       subclass.send(:include, DefaultReturnCodes) unless subclass.ancestors.member? DefaultReturnCodes
       subclass.send(:include, DefaultRedirects) unless subclass.ancestors.member? DefaultRedirects
-      subclass.send(:include, Rails.application.routes.url_helpers)
+#      pp Rails.application
+      if (Rails.application)
+        if (Rails.application.routes)
+#          pp Rails.application.routes
+          subclass.send(:include, Rails.application.routes.url_helpers)
+        else
+#          print "no rails application routes defined!\n"
+        end
+      else
+#        print "no rails application defined!\n"
+      end
     end
   end
 
